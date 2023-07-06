@@ -18,6 +18,7 @@
   --fs-middle: 0.85rem;
   --fs-small: 0.71rem;
   --fs-big: 2.57rem;
+  --fs-big-m: 1.5rem;
 
   --fw-bold: 600;
   --fw-normal: 400;
@@ -103,6 +104,11 @@
   overflow: hidden;
 
 }
+@media (max-width: 767px) {
+  :root {
+    --sidebar-w: 170px;
+  }
+}
 
 .search-form {
   padding: 20px;
@@ -154,6 +160,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 
 .note-preview__text {
   font-size: var(--fs-middle);
@@ -285,6 +292,15 @@
   padding: 20px;
   color: var(--color-main);
   border-radius: 10px;
+  transition: all 0.3s ease;
+}
+@media (max-width: 767px) {
+  .note__title {
+    font-size: var(--fs-big-m);
+    line-height: 2rem;
+    padding: 0px 20px;
+  }
+
 }
 
 .note__title:hover {
