@@ -10,19 +10,22 @@ export default class NotesUI {
     this.notesPreview = this.root.querySelector("#notes-preview");
     this.addNoteBtn = this.root.querySelector("#add-note");
     this.delNoteBtn = this.root.querySelector("#del-note");
+    this.exportBtn = this.root.querySelector("#export-note");
 
     this.note = this.root.querySelector("#note");
     this.noteTitle = this.root.querySelector("#note-title");
     this.noteContent = this.root.querySelector("#note-content");
     this.searchInput = this.root.querySelector("#search-input");
 
-    this.addNoteBtn.addEventListener("click", () => {
-      this.createNote();
-    });
+    this.goalInput = this.root.querySelector("#goal-input");
+    const savedGoal = localStorage.getItem("drafts-goal");
+    if (savedGoal) this.goalInput.value = savedGoal;
 
-    this.delNoteBtn.addEventListener("click", () => {
-      this.deleteNote();
-    });
+    // ===
+
+    this.addNoteBtn.addEventListener("click", () => this.createNote());
+    this.delNoteBtn.addEventListener("click", () => this.deleteNote());
+    this.exportBtn.addEventListener("click", () => this.exportNote());
 
     this.noteTitle.addEventListener("input", (e) => {
       this.updateNote();
@@ -37,8 +40,13 @@ export default class NotesUI {
       this.updateWordCount();
     });
 
-    this.searchInput.addEventListener("input", () => {
-      this.initUI();
+    this.searchInput.addEventListener("input", () => this.initUI());
+
+    this.goalInput.addEventListener("input", () => {
+      const val = this.goalInput.value;
+      if (val) localStorage.setItem("drafts-goal", val);
+      else localStorage.removeItem("drafts-goal");
+      this.updateWordCount();
     });
 
     document.addEventListener("keydown", (e) => {
@@ -68,16 +76,47 @@ export default class NotesUI {
   updateWordCount() {
     const text = this.noteContent.innerText || "";
     const words = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
-    const el = this.root.querySelector("#word-count");
-    if (!el) return;
 
-    let label;
-    if (words === 0) label = "0 слов";
-    else if (words === 1) label = "1 слово";
-    else if (words >= 2 && words <= 4) label = `${words} слова`;
-    else label = `${words} слов`;
+    const wordEl = this.root.querySelector("#word-count");
+    if (wordEl) {
+      if (words === 0) wordEl.textContent = "0 слов";
+      else if (words === 1) wordEl.textContent = "1 слово";
+      else if (words >= 2 && words <= 4) wordEl.textContent = `${words} слова`;
+      else wordEl.textContent = `${words} слов`;
+    }
 
-    el.textContent = label;
+    const timeEl = this.root.querySelector("#read-time");
+    if (timeEl) {
+      const mins = Math.ceil(words / 200);
+      timeEl.textContent = words === 0 ? "~0 мин" : `~${mins} мин`;
+    }
+
+    const goalBar = this.root.querySelector("#goal-bar");
+    const goalProgress = this.root.querySelector("#goal-progress");
+    if (goalBar && goalProgress) {
+      const goal = parseInt(this.goalInput.value);
+      if (goal > 0) {
+        goalProgress.classList.add("goal-progress--active");
+        const pct = Math.min(100, Math.round((words / goal) * 100));
+        goalBar.style.width = `${pct}%`;
+        goalBar.classList.toggle("goal-progress__bar--done", pct >= 100);
+      } else {
+        goalProgress.classList.remove("goal-progress--active");
+      }
+    }
+  }
+
+  exportNote() {
+    const title = this.noteTitle.innerText || "draft";
+    const content = this.noteContent.innerText || "";
+    const text = `${title}\n\n${content}`;
+    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${title.slice(0, 40).trim().replace(/\s+/g, "_") || "draft"}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
   }
 
   // ===
@@ -135,9 +174,7 @@ export default class NotesUI {
     this.notesPreview.innerHTML = this.initListNotes();
 
     this.root.querySelectorAll(".note-preview").forEach(noteBtn => {
-      noteBtn.addEventListener("click", () => {
-        this.noteBtnClick(noteBtn);
-      });
+      noteBtn.addEventListener("click", () => this.noteBtnClick(noteBtn));
     });
   }
 

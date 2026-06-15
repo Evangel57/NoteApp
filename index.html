@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NoteApp</title>
+  <title>Drafts</title>
 
   <!-- LINKS TO GOOGLEFONT -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,29 +20,28 @@
     <div class="sidebar-wrapper" id="sidebar-wrapper">
       <div class="sidebar">
         <div class="search-form">
-          <input type="search" name="" id="search-input" class="search-form__input" placeholder="Search">
+          <input type="search" name="" id="search-input" class="search-form__input" placeholder="Поиск">
         </div>
         <div class="notes-preview" id="notes-preview"></div>
       </div>
     </div>
 
     <div class="content-wrapper">
-      <div class="main-menu">
+      <div class="main-menu" id="main-menu">
         <div class="main-menu__left">
           <button class="button button_active" id="menu-btn">
-            <span class="material-symbols-outlined">
-              menu
-            </span>
+            <span class="material-symbols-outlined">menu</span>
           </button>
         </div>
         <div class="main-menu__title">
-          <div class="title">NotesApp</div>
+          <div class="title">Drafts</div>
         </div>
         <div class="main-menu__right">
           <button class="button" id="add-note">
-            <span class="material-symbols-outlined">
-              add_box
-            </span>
+            <span class="material-symbols-outlined">add_box</span>
+          </button>
+          <button class="button" id="focus-btn" title="Фокус-режим (F)">
+            <span class="material-symbols-outlined">fullscreen</span>
           </button>
           <button class="button" id="main-menu-additional-btn">
             <span class="material-symbols-outlined main-menu-additional-btn-icon" id="main-menu-additional-btn-icon">
@@ -50,15 +49,14 @@
             </span>
           </button>
           <div class="main-menu-additional" id="main-menu-additional">
+            <button class="button" id="export-note" title="Экспорт .txt">
+              <span class="material-symbols-outlined">download</span>
+            </button>
             <button class="button" id="theme-btn">
-              <span class="material-symbols-outlined">
-                brightness_4
-              </span>
+              <span class="material-symbols-outlined">brightness_4</span>
             </button>
             <button class="button button_danger" id="del-note">
-              <span class="material-symbols-outlined">
-                delete
-              </span>
+              <span class="material-symbols-outlined">delete</span>
             </button>
           </div>
         </div>
@@ -69,7 +67,20 @@
           <div class="note__content" id="note-content" contenteditable="true"></div>
         </div>
         <div class="note-status">
-          <span id="word-count">0 слов</span>
+          <span class="note-status__left">
+            <span id="word-count">0 слов</span>
+            <span class="note-status__sep">·</span>
+            <span id="read-time">~0 мин</span>
+          </span>
+          <span class="note-status__right">
+            <label class="goal-label">
+              Цель:
+              <input type="number" id="goal-input" class="goal-input" placeholder="слов" min="1" max="99999">
+            </label>
+            <div class="goal-progress" id="goal-progress">
+              <div class="goal-progress__bar" id="goal-bar"></div>
+            </div>
+          </span>
         </div>
       </div>
     </div>
