@@ -14,6 +14,7 @@ function main() {
   const subMenuBtnIcon = document.getElementById("main-menu-additional-btn-icon");
   const subMenu = document.getElementById("main-menu-additional");
   const focusBtn = document.getElementById("focus-btn");
+  const focusExitBtn = document.getElementById("focus-exit-btn");
 
   const notesData = new NotesAPI();
   const app = new NotesUI(notesData, page);
@@ -33,19 +34,33 @@ function main() {
     subMenuBtnIcon.classList.toggle("main-menu-additional-btn-icon_active");
   });
 
+  function enterFocus() {
+    page.classList.add("page--focus");
+    focusBtn.classList.add("button_active");
+    focusExitBtn.classList.add("focus-exit-btn--visible");
+  }
+
+  function exitFocus() {
+    page.classList.remove("page--focus");
+    focusBtn.classList.remove("button_active");
+    focusExitBtn.classList.remove("focus-exit-btn--visible");
+  }
+
   focusBtn.addEventListener("click", () => {
-    page.classList.toggle("page--focus");
-    focusBtn.classList.toggle("button_active");
+    page.classList.contains("page--focus") ? exitFocus() : enterFocus();
   });
 
+  focusExitBtn.addEventListener("click", exitFocus);
+
   document.addEventListener("keydown", (e) => {
-    if (e.key === "f" && !["INPUT", "H1", "DIV"].includes(e.target.tagName)) {
-      page.classList.toggle("page--focus");
-      focusBtn.classList.toggle("button_active");
+    const tag = e.target.tagName;
+    const isEditing = tag === "INPUT" || e.target.isContentEditable;
+
+    if (e.key === "f" && !isEditing) {
+      page.classList.contains("page--focus") ? exitFocus() : enterFocus();
     }
-    if (e.key === "Escape" && page.classList.contains("page--focus")) {
-      page.classList.remove("page--focus");
-      focusBtn.classList.remove("button_active");
+    if (e.key === "Escape") {
+      exitFocus();
     }
   });
 

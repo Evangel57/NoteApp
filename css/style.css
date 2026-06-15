@@ -377,14 +377,25 @@
 }
 
 /* ===== Status bar ===== */
+.note-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .note-status {
+  position: sticky;
+  bottom: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px 14px;
+  padding: 8px 24px 10px;
+  background: var(--bg-color-main);
+  border-top: 1px solid var(--color-border);
   color: var(--color-light);
   font-size: var(--fs-small);
   gap: 12px;
+  margin-top: auto;
+  z-index: 5;
 }
 
 .note-status__left {
@@ -432,28 +443,26 @@
   -webkit-appearance: none;
 }
 
-.goal-progress {
-  width: 72px;
-  height: 4px;
-  background: var(--color-border);
-  border-radius: 2px;
-  overflow: hidden;
-  display: none;
+/* ===== Global progress bar ===== */
+.goal-progress-global {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: transparent;
+  z-index: 100;
+  pointer-events: none;
 }
 
-.goal-progress--active {
-  display: block;
-}
-
-.goal-progress__bar {
+.goal-progress-global__bar {
   height: 100%;
-  background: var(--clr-4);
-  border-radius: 2px;
   width: 0%;
+  background: var(--clr-4);
   transition: width 0.3s ease, background 0.3s ease;
 }
 
-.goal-progress__bar--done {
+.goal-progress-global__bar--done {
   background: #22c55e;
 }
 
@@ -479,5 +488,36 @@
 
 .page--focus .note {
   padding-top: 72px;
+}
+
+/* ===== Focus exit button ===== */
+.focus-exit-btn {
+  position: fixed;
+  top: 12px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 8px;
+  background: var(--bg-color-accent);
+  color: var(--color-light);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--tran-1), background-color var(--tran-2);
+  z-index: 200;
+}
+
+.focus-exit-btn:hover {
+  background: var(--bg-color-active);
+}
+
+.page--focus ~ * .focus-exit-btn,
+.focus-exit-btn--visible {
+  opacity: 1;
+  pointer-events: all;
 }
 

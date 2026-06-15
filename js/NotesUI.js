@@ -18,8 +18,9 @@ export default class NotesUI {
     this.searchInput = this.root.querySelector("#search-input");
 
     this.goalInput = this.root.querySelector("#goal-input");
-    const savedGoal = localStorage.getItem("drafts-goal");
-    if (savedGoal) this.goalInput.value = savedGoal;
+    const savedGoal = localStorage.getItem("drafts-goal") || "500";
+    this.goalInput.value = savedGoal;
+    localStorage.setItem("drafts-goal", savedGoal);
 
     // ===
 
@@ -86,23 +87,27 @@ export default class NotesUI {
     }
 
     const timeEl = this.root.querySelector("#read-time");
+    const timeSep = this.root.querySelector("#time-sep");
     if (timeEl) {
-      const mins = Math.ceil(words / 200);
-      timeEl.textContent = words === 0 ? "~0 мин" : `~${mins} мин`;
+      if (words === 0) {
+        timeEl.textContent = "";
+        if (timeSep) timeSep.style.display = "none";
+      } else {
+        if (timeSep) timeSep.style.display = "";
+        if (words < 200) {
+          timeEl.textContent = "< 1 мин";
+        } else {
+          timeEl.textContent = `~${Math.ceil(words / 200)} мин`;
+        }
+      }
     }
 
-    const goalBar = this.root.querySelector("#goal-bar");
-    const goalProgress = this.root.querySelector("#goal-progress");
-    if (goalBar && goalProgress) {
-      const goal = parseInt(this.goalInput.value);
-      if (goal > 0) {
-        goalProgress.classList.add("goal-progress--active");
-        const pct = Math.min(100, Math.round((words / goal) * 100));
-        goalBar.style.width = `${pct}%`;
-        goalBar.classList.toggle("goal-progress__bar--done", pct >= 100);
-      } else {
-        goalProgress.classList.remove("goal-progress--active");
-      }
+    const goalBar = document.querySelector("#goal-bar-global");
+    if (goalBar) {
+      const goal = parseInt(this.goalInput.value) || 500;
+      const pct = Math.min(100, Math.round((words / goal) * 100));
+      goalBar.style.width = `${pct}%`;
+      goalBar.classList.toggle("goal-progress-global__bar--done", pct >= 100);
     }
   }
 

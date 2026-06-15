@@ -16,6 +16,12 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <button class="focus-exit-btn" id="focus-exit-btn" title="Выйти (Esc)">
+    <span class="material-symbols-outlined">fullscreen_exit</span>
+  </button>
+  <div class="goal-progress-global" id="goal-progress-global">
+    <div class="goal-progress-global__bar" id="goal-bar-global"></div>
+  </div>
   <div class="page" id="page">
     <div class="sidebar-wrapper" id="sidebar-wrapper">
       <div class="sidebar">
@@ -69,17 +75,14 @@
         <div class="note-status">
           <span class="note-status__left">
             <span id="word-count">0 слов</span>
-            <span class="note-status__sep">·</span>
-            <span id="read-time">~0 мин</span>
+            <span class="note-status__sep" id="time-sep">·</span>
+            <span id="read-time"></span>
           </span>
           <span class="note-status__right">
             <label class="goal-label">
               Цель:
-              <input type="number" id="goal-input" class="goal-input" placeholder="слов" min="1" max="99999">
+              <input type="number" id="goal-input" class="goal-input" placeholder="500" min="1" max="99999">
             </label>
-            <div class="goal-progress" id="goal-progress">
-              <div class="goal-progress__bar" id="goal-bar"></div>
-            </div>
           </span>
         </div>
       </div>
