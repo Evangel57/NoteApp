@@ -466,6 +466,29 @@
   background: #22c55e;
 }
 
+/* ===== Streak ===== */
+.streak-display {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: #f59e0b;
+}
+
+.streak-icon {
+  font-size: 15px !important;
+  font-variation-settings: 'FILL' 1, 'wght' 400;
+}
+
+@keyframes streakPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+.streak-display--pop {
+  animation: streakPop 0.35s ease;
+}
+
 /* ===== Focus mode ===== */
 .main-menu {
   transition: opacity var(--tran-1), transform var(--tran-1);

@@ -39,6 +39,8 @@ export default class NotesUI {
     this.noteContent.addEventListener("input", () => {
       this.updateNote();
       this.updateWordCount();
+      const words = (this.noteContent.innerText || "").trim().split(/\s+/).filter(Boolean).length;
+      if (words > 0) this.markWriteToday();
     });
 
     this.searchInput.addEventListener("input", () => this.initUI());
@@ -58,6 +60,7 @@ export default class NotesUI {
     });
 
     this.initUI();
+    this.initStreak();
   }
 
   // ===
@@ -108,6 +111,72 @@ export default class NotesUI {
       const pct = Math.min(100, Math.round((words / goal) * 100));
       goalBar.style.width = `${pct}%`;
       goalBar.classList.toggle("goal-progress-global__bar--done", pct >= 100);
+    }
+  }
+
+  // ===
+
+  getToday() {
+    return new Date().toISOString().split("T")[0];
+  }
+
+  initStreak() {
+    const today = this.getToday();
+    const lastDate = localStorage.getItem("drafts-streak-date");
+    let count = parseInt(localStorage.getItem("drafts-streak-count")) || 0;
+
+    if (lastDate && count > 0) {
+      const diff = (new Date(today) - new Date(lastDate)) / 86400000;
+      if (diff > 1) {
+        count = 0;
+        localStorage.setItem("drafts-streak-count", 0);
+      }
+    }
+
+    this.renderStreak(count);
+  }
+
+  markWriteToday() {
+    const today = this.getToday();
+    const lastDate = localStorage.getItem("drafts-streak-date");
+
+    if (lastDate === today) return;
+
+    let count = parseInt(localStorage.getItem("drafts-streak-count")) || 0;
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().split("T")[0];
+
+    count = (lastDate === yesterdayStr) ? count + 1 : 1;
+
+    localStorage.setItem("drafts-streak-count", count);
+    localStorage.setItem("drafts-streak-date", today);
+    this.renderStreak(count, true);
+  }
+
+  renderStreak(count, animate = false) {
+    const el = document.querySelector("#streak-count");
+    const display = document.querySelector("#streak-display");
+    if (!el || !display) return;
+
+    if (count <= 0) {
+      display.style.display = "none";
+      return;
+    }
+
+    display.style.display = "flex";
+
+    let label;
+    if (count === 1) label = "1 день";
+    else if (count >= 2 && count <= 4) label = `${count} дня`;
+    else label = `${count} дней`;
+    el.textContent = label;
+
+    if (animate) {
+      display.classList.remove("streak-display--pop");
+      void display.offsetWidth;
+      display.classList.add("streak-display--pop");
+      setTimeout(() => display.classList.remove("streak-display--pop"), 400);
     }
   }
 
