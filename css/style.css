@@ -513,6 +513,14 @@
   padding-top: 72px;
 }
 
+.page--focus .note-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.page--focus .note-wrapper {
+  scrollbar-width: none;
+}
+
 /* ===== Focus exit button ===== */
 .focus-exit-btn {
   position: fixed;
