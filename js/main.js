@@ -19,8 +19,13 @@ function main() {
   const notesData = new NotesAPI();
   const app = new NotesUI(notesData, page);
 
+  if (localStorage.getItem("drafts-theme") === "dark") {
+    page.classList.add("page_dark");
+  }
+
   themeBtn.addEventListener("click", () => {
     page.classList.toggle("page_dark");
+    localStorage.setItem("drafts-theme", page.classList.contains("page_dark") ? "dark" : "light");
   });
 
   menuBtn.addEventListener("click", () => {
