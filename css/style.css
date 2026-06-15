@@ -321,3 +321,68 @@
   background-color: var(--bg-color-accent);
 }
 
+/* ===== Card color accents ===== */
+.note-preview {
+  border-left: 3px solid transparent;
+  padding-left: 17px;
+}
+
+.note-preview--c0 { border-left-color: #94a3b8; }
+.note-preview--c1 { border-left-color: #f59e0b; }
+.note-preview--c2 { border-left-color: #ec4899; }
+.note-preview--c3 { border-left-color: #3b82f6; }
+.note-preview--c4 { border-left-color: #22c55e; }
+.note-preview--c5 { border-left-color: #a855f7; }
+
+/* ===== Animations ===== */
+@keyframes noteIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes noteOut {
+  from { opacity: 1; transform: translateX(0); max-height: 90px; padding-top: 15px; padding-bottom: 15px; }
+  to   { opacity: 0; transform: translateX(-10px); max-height: 0; padding-top: 0; padding-bottom: 0; }
+}
+
+.note-preview--new {
+  animation: noteIn 0.22s ease forwards;
+}
+
+.note-preview--deleting {
+  animation: noteOut 0.22s ease forwards;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ===== Empty state ===== */
+.notes-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 40px 20px;
+  color: var(--color-light);
+  text-align: center;
+}
+
+.notes-empty .material-symbols-outlined {
+  font-size: 2rem;
+  opacity: 0.4;
+}
+
+.notes-empty__text {
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+
+/* ===== Word count bar ===== */
+.note-status {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 20px 12px;
+  color: var(--color-light);
+  font-size: var(--fs-small);
+  opacity: 0.6;
+}
+
