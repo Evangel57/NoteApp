@@ -18,7 +18,7 @@ export default class NotesUI {
     this.searchInput = this.root.querySelector("#search-input");
 
     this.goalInput = this.root.querySelector("#goal-input");
-    const savedGoal = localStorage.getItem("drafts-goal") || "500";
+    const savedGoal = localStorage.getItem("drafts-goal") || "1200";
     this.goalInput.value = savedGoal;
     localStorage.setItem("drafts-goal", savedGoal);
 
