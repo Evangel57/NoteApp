@@ -98,9 +98,9 @@ export default class NotesUI {
       } else {
         if (timeSep) timeSep.style.display = "";
         if (words < 200) {
-          timeEl.textContent = "< 1 мин";
+          timeEl.textContent = "< 1 мин чтения";
         } else {
-          timeEl.textContent = `~${Math.ceil(words / 200)} мин`;
+          timeEl.textContent = `~${Math.ceil(words / 200)} мин чтения`;
         }
       }
     }
